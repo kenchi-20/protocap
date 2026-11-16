@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --surface: #ffffff;
+  --paper: #f8fafc;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --maroon: #7a1c1c;
+  --gold: #d97706;
+  --good: #0f6e56;
+  --good-soft: #e1f5ee;
+  --warn: #854f0b;
+  --warn-soft: #faeeda;
+  --bad: #a32d2d;
+  --bad-soft: #fcebeb;
+  --chart-inapp: #7a1c1c;
+  --chart-push: #b45309;
+  --chart-sms: #1d4e89;
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(1200px 480px at 100% -10%, rgba(217, 119, 6, 0.12), transparent 55%),
+    radial-gradient(900px 420px at -10% 0%, rgba(122, 28, 28, 0.1), transparent 50%);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
