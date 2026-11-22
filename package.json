@@ -6,9 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed:users": "tsx --env-file=.env.local scripts/seed-users.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
     "framer-motion": "^12.23.12",
     "html5-qrcode": "^2.3.8",
     "lucide-react": "^0.542.0",
@@ -29,6 +31,7 @@
     "eslint-config-next": "^15.5.29",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.2"
   }
 }
