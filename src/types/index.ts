@@ -1,12 +1,13 @@
 export type Role = "student" | "parent" | "admin";
 
-export type UserRole = "parent" | "teacher" | "security" | "admin";
+export type UserRole = "student" | "parent" | "teacher" | "security" | "admin";
 
 export interface User {
   id: string;
   email: string;
   role: UserRole;
   name: string;
+  studentId?: string;
 }
 
 export interface ParentChildLink {
