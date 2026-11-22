@@ -9,17 +9,34 @@ async function seedUsers() {
   // Demo users
   // Demo only: plain text. NEVER in production.
   const users = [
+    // Parent users
     { email: "maria@parent.test", password: "parent123" /* Demo only: plain text. NEVER in production. */, role: "parent", name: "Mrs. Maria Dela Cruz" },
     { email: "paulo@parent.test", password: "parent123" /* Demo only: plain text. NEVER in production. */, role: "parent", name: "Mr. Paulo Villanueva" },
     { email: "liza@parent.test", password: "parent123" /* Demo only: plain text. NEVER in production. */, role: "parent", name: "Mrs. Liza Santos" },
     { email: "elena@parent.test", password: "parent123" /* Demo only: plain text. NEVER in production. */, role: "parent", name: "Mrs. Elena Ramirez" },
     { email: "henry@parent.test", password: "parent123" /* Demo only: plain text. NEVER in production. */, role: "parent", name: "Mr. Henry Tan" },
+    // Teacher users
     { email: "osalla@teacher.test", password: "teacher123" /* Demo only: plain text. NEVER in production. */, role: "teacher", name: "Ms. Rovilyn Osalla" },
     { email: "bautista@teacher.test", password: "teacher123" /* Demo only: plain text. NEVER in production. */, role: "teacher", name: "Mr. Carlo Bautista" },
     { email: "flores@teacher.test", password: "teacher123" /* Demo only: plain text. NEVER in production. */, role: "teacher", name: "Ms. Diane Flores" },
     { email: "navarro@teacher.test", password: "teacher123" /* Demo only: plain text. NEVER in production. */, role: "teacher", name: "Mr. Joel Navarro" },
+    // Security users
     { email: "security@admin.test", password: "admin123" /* Demo only: plain text. NEVER in production. */, role: "security", name: "Security Desk" },
+    // Admin users
     { email: "principal@admin.test", password: "admin123" /* Demo only: plain text. NEVER in production. */, role: "admin", name: "Principal Desk" },
+    // Student users
+    { email: "juan@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Juan Dela Cruz", student_id: "USA-JHS-2026-0104" },
+    { email: "andrea@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Andrea Mae Villanueva", student_id: "USA-JHS-2026-0088" },
+    { email: "miguel@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Miguel Santos", student_id: "USA-JHS-2026-0117" },
+    { email: "sofia@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Sofia Ramirez", student_id: "USA-JHS-2026-0062" },
+    { email: "gabriel@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Gabriel Tan", student_id: "USA-JHS-2026-0142" },
+    { email: "isabella@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Isabella Cruz", student_id: "USA-JHS-2026-0091" },
+    { email: "luis@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Luis Mendoza", student_id: "USA-JHS-2026-0203" },
+    { email: "patricia@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Patricia Ong", student_id: "USA-JHS-2026-0074" },
+    { email: "rafael@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Rafael Aquino", student_id: "USA-JHS-2026-0188" },
+    { email: "camille@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Camille Reyes", student_id: "USA-JHS-2026-0125" },
+    { email: "nathan@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Nathan dela Peña", student_id: "USA-JHS-2026-0160" },
+    { email: "hannah@student.test", password: "student123" /* Demo only: plain text. NEVER in production. */, role: "student", name: "Hannah Go", student_id: "USA-JHS-2026-0055" },
   ];
 
   const { data: insertedUsers, error: userError } = await supabase
