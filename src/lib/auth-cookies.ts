@@ -6,9 +6,8 @@ const SESSION_KEY = "one_id_session";
 export function saveSessionCookie(user: User) {
   setCookie(SESSION_KEY, JSON.stringify(user), {
     maxAge: 60 * 60 * 24 * 7, // 7 days
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
+    path: "/",
   });
 }
 
@@ -23,5 +22,5 @@ export function getSessionCookie(): User | null {
 }
 
 export function clearSessionCookie() {
-  deleteCookie(SESSION_KEY);
+  deleteCookie(SESSION_KEY, { path: "/" });
 }

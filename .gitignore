@@ -5,3 +5,5 @@ out
 *.log
 .env*.local
 .vercel
+test-results/
+playwright-report/
