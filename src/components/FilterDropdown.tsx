@@ -1,11 +1,11 @@
 "use client";
 
-interface FilterOption {
+export interface FilterOption {
   label: string;
   value: string;
 }
 
-interface FilterDropdownProps {
+export interface FilterDropdownProps {
   options: FilterOption[];
   selected: string;
   onChange: (value: string) => void;

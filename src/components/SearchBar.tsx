@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
 
-interface SearchBarProps {
+export interface SearchBarProps {
   value: string;
   onChange: (query: string) => void;
   placeholder?: string;
