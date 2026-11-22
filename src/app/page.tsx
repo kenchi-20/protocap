@@ -15,7 +15,7 @@ const lanes = [
     icon: UserRound,
   },
   {
-    href: "/admin/scanner",
+    href: "/login",
     title: "Gate scanner",
     who: "Science & Tech Fair",
     id: "Live check-in",
@@ -23,7 +23,7 @@ const lanes = [
     icon: QrCode,
   },
   {
-    href: "/parent",
+    href: "/login",
     title: "Parent & adviser",
     who: "Mrs. Maria Dela Cruz",
     id: "+63 917 555 0192",
@@ -31,7 +31,7 @@ const lanes = [
     icon: Bell,
   },
   {
-    href: "/admin",
+    href: "/login",
     title: "Principal desk",
     who: "USA-JHS oversight",
     id: "12 students",

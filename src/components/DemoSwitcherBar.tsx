@@ -9,8 +9,8 @@ import type { Role } from "@/types";
 
 const roles: { id: Role; label: string; who: string; href: string; icon: typeof UserRound }[] = [
   { id: "student", label: "Student", who: "Juan Dela Cruz", href: "/student", icon: UserRound },
-  { id: "parent", label: "Parent / Adviser", who: "Maria · Ms. Osalla", href: "/parent", icon: Users },
-  { id: "admin", label: "Admin", who: "Principal desk", href: "/admin", icon: Shield },
+  { id: "parent", label: "Parent / Adviser", who: "Maria · Ms. Osalla", href: "/login", icon: Users },
+  { id: "admin", label: "Admin", who: "Principal desk", href: "/login", icon: Shield },
 ];
 
 export function DemoSwitcherBar() {
