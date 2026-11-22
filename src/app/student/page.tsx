@@ -1,26 +1,43 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, MapPin } from "lucide-react";
+import { Check, LogOut, MapPin } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { DynamicStudentQR } from "@/components/DynamicStudentQR";
 import { formatClock } from "@/lib/format";
 import { usePrototypeStore } from "@/store/usePrototypeStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import { ABSENCE_THRESHOLD, DEMO_STUDENT_ID } from "@/types";
 
 const tabs = ["Announcements", "My registrations", "History"] as const;
 
 export default function StudentPage() {
+  const router = useRouter();
+  const user = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
   const [tab, setTab] = useState<(typeof tabs)[number]>("Announcements");
-  const student = usePrototypeStore((s) => s.students.find((st) => st.id === DEMO_STUDENT_ID)!);
+  const studentId = user?.studentId || DEMO_STUDENT_ID;
+  const student = usePrototypeStore(
+    (s) => s.students.find((st) => st.id === studentId) || s.students.find((st) => st.id === DEMO_STUDENT_ID) || s.students[0]
+  );
   const activities = usePrototypeStore((s) => s.activities);
   const logs = usePrototypeStore((s) => s.logs);
   const notifications = usePrototypeStore((s) => s.notifications);
   const register = usePrototypeStore((s) => s.register);
 
+  if (!student) {
+    return null;
+  }
+
   const mine = logs.filter((l) => l.studentId === student.id);
   const registered = (id: string) => mine.some((l) => l.activityId === id && l.registeredAt);
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
 
   return (
     <>
@@ -30,6 +47,15 @@ export default function StudentPage() {
         subtitle={`${student.gradeSection} · consent on file · adviser ${student.adviserName}`}
       />
       <main className="mx-auto grid max-w-6xl gap-5 px-4 py-6 sm:px-6 lg:grid-cols-[320px_1fr]">
+        <div className="lg:col-span-2 flex items-center justify-end">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-200"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            Sign out
+          </button>
+        </div>
         <section className="rounded-3xl bg-maroon p-5 text-white shadow-card">
           <div className="flex items-center gap-3">
             <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/15 font-display text-xl">
