@@ -1,13 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { Html5Qrcode } from "html5-qrcode";
 import { AppHeader } from "@/components/AppHeader";
 import { formatClock } from "@/lib/format";
+import { useAuthStore } from "@/store/useAuthStore";
 import { usePrototypeStore } from "@/store/usePrototypeStore";
 import type { ScanResult } from "@/types";
 
 export default function ScannerPage() {
+  const user = useAuthStore((s) => s.user);
   const geofence = usePrototypeStore((s) => s.campusGeofence);
   const setGeofence = usePrototypeStore((s) => s.setCampusGeofence);
   const verifyScan = usePrototypeStore((s) => s.verifyScan);
@@ -69,12 +73,22 @@ export default function ScannerPage() {
   return (
     <>
       <AppHeader
-        eyebrow="Fraud-resistant check-in"
+        eyebrow={user?.role === "admin" ? "Admin Gate Scanner" : "Security Gate Scanner"}
         title="Science & Tech Fair gate"
         subtitle="A token must be under 30 seconds old and the device must be on the USA Iloilo campus network."
       />
-      <main className="mx-auto grid max-w-6xl gap-5 px-4 py-6 sm:px-6 lg:grid-cols-[1fr_320px]">
-        <section className="space-y-4">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+        <div className="mb-4">
+          <Link
+            href="/security-portal"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-maroon hover:underline"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to Security Portal
+          </Link>
+        </div>
+        <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
+          <section className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-slate-200 bg-white p-4 shadow-card">
             <div>
               <p className="text-sm font-semibold text-ink">Campus Wi-Fi / geofence</p>
@@ -149,6 +163,7 @@ export default function ScannerPage() {
             ))}
           </ul>
         </aside>
+        </div>
       </main>
     </>
   );
