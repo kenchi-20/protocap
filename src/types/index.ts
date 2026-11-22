@@ -1,5 +1,24 @@
 export type Role = "student" | "parent" | "admin";
 
+export type UserRole = "parent" | "teacher" | "security" | "admin";
+
+export interface User {
+  id: string;
+  email: string;
+  role: UserRole;
+  name: string;
+}
+
+export interface ParentChildLink {
+  parentUserId: string;
+  studentId: string;
+}
+
+export interface TeacherSectionLink {
+  teacherUserId: string;
+  gradeSection: string;
+}
+
 export type ActivityCategory =
   | "Academic"
   | "Co-Curricular"
