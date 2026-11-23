@@ -5,12 +5,41 @@ import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronUp, RotateCcw, Shield, UserRound, Users } from "lucide-react";
 import { usePrototypeStore } from "@/store/usePrototypeStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import type { Role } from "@/types";
 
-const roles: { id: Role; label: string; who: string; href: string; icon: typeof UserRound }[] = [
-  { id: "student", label: "Student", who: "Juan Dela Cruz", href: "/student", icon: UserRound },
-  { id: "parent", label: "Parent / Adviser", who: "Maria · Ms. Osalla", href: "/login", icon: Users },
-  { id: "admin", label: "Admin", who: "Principal desk", href: "/login", icon: Shield },
+const roles: {
+  id: Role;
+  label: string;
+  who: string;
+  href: string;
+  icon: typeof UserRound;
+  creds?: { id: string; pass: string };
+}[] = [
+  {
+    id: "student",
+    label: "Student",
+    who: "Juan Dela Cruz",
+    href: "/student",
+    icon: UserRound,
+    creds: { id: "USA-JHS-2026-0104", pass: "student123" },
+  },
+  {
+    id: "parent",
+    label: "Parent",
+    who: "Maria Dela Cruz",
+    href: "/parent-portal",
+    icon: Users,
+    creds: { id: "maria@parent.test", pass: "parent123" },
+  },
+  {
+    id: "admin",
+    label: "Admin",
+    who: "Principal desk",
+    href: "/security-portal",
+    icon: Shield,
+    creds: { id: "principal@admin.test", pass: "admin123" },
+  },
 ];
 
 export function DemoSwitcherBar() {
@@ -18,12 +47,17 @@ export function DemoSwitcherBar() {
   const role = usePrototypeStore((s) => s.role);
   const setRole = usePrototypeStore((s) => s.setRole);
   const resetDemo = usePrototypeStore((s) => s.resetDemo);
+  const login = useAuthStore((s) => s.login);
+  const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
   const path = usePathname();
 
-  function go(next: Role, href: string) {
-    setRole(next);
-    if (!path.startsWith(href)) router.push(href);
+  async function go(item: (typeof roles)[number]) {
+    setRole(item.id);
+    if (item.creds) {
+      await login(item.creds.id, item.creds.pass);
+    }
+    if (!path.startsWith(item.href)) router.push(item.href);
   }
 
   return (
@@ -49,7 +83,7 @@ export function DemoSwitcherBar() {
                     <button
                       key={item.id}
                       type="button"
-                      onClick={() => go(item.id, item.href)}
+                      onClick={() => go(item)}
                       className={`flex items-center justify-center gap-2 rounded-2xl px-2 py-2 text-left transition ${
                         active ? "bg-maroon text-white" : "text-slate-300 hover:bg-white/10"
                       }`}
@@ -67,6 +101,7 @@ export function DemoSwitcherBar() {
                 <button
                   type="button"
                   onClick={() => {
+                    logout();
                     resetDemo();
                     router.push("/");
                   }}

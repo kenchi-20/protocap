@@ -7,3 +7,6 @@ out
 .vercel
 test-results/
 playwright-report/
+*.tsbuildinfo
+.claude/
+supabase/.temp/

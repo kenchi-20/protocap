@@ -21,7 +21,7 @@ export default function TeacherPortalLayout({ children }: { children: React.Reac
     }
   }, [isLoading, isAuthenticated, user, router]);
 
-  if (isLoading || !isAuthenticated) {
+  if (isLoading || !isAuthenticated || user?.role !== "teacher") {
     return <div className="p-8 text-center text-slate-500">Loading...</div>;
   }
 

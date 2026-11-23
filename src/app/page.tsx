@@ -89,7 +89,7 @@ export default function HomePage() {
             const Icon = lane.icon;
             return (
               <Link
-                key={lane.href}
+                key={lane.title}
                 href={lane.href}
                 className="group rounded-3xl border border-slate-200 bg-white p-5 shadow-card transition hover:-translate-y-0.5"
               >

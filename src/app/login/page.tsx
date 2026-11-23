@@ -72,6 +72,59 @@ export default function LoginPage() {
             {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
+
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <p className="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            Quick fill demo accounts
+          </p>
+          <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("USA-JHS-2026-0104");
+                setPassword("student123");
+              }}
+              className="rounded-xl border border-slate-200 p-2 text-left hover:border-maroon hover:bg-maroon-soft/30 transition"
+            >
+              <span className="block font-semibold text-ink">Student (Juan)</span>
+              <span className="block font-mono text-[10px] text-slate-500 truncate">USA-JHS-2026-0104</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("maria@parent.test");
+                setPassword("parent123");
+              }}
+              className="rounded-xl border border-slate-200 p-2 text-left hover:border-maroon hover:bg-maroon-soft/30 transition"
+            >
+              <span className="block font-semibold text-ink">Parent (Mrs. Dela Cruz)</span>
+              <span className="block font-mono text-[10px] text-slate-500 truncate">maria@parent.test</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("osalla@teacher.test");
+                setPassword("teacher123");
+              }}
+              className="rounded-xl border border-slate-200 p-2 text-left hover:border-maroon hover:bg-maroon-soft/30 transition"
+            >
+              <span className="block font-semibold text-ink">Teacher (Ms. Osalla)</span>
+              <span className="block font-mono text-[10px] text-slate-500 truncate">osalla@teacher.test</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("principal@admin.test");
+                setPassword("admin123");
+              }}
+              className="rounded-xl border border-slate-200 p-2 text-left hover:border-maroon hover:bg-maroon-soft/30 transition"
+            >
+              <span className="block font-semibold text-ink">Admin (Principal)</span>
+              <span className="block font-mono text-[10px] text-slate-500 truncate">principal@admin.test</span>
+            </button>
+          </div>
+        </div>
+
         <p className="mt-4 text-center text-xs text-slate-500">
           juan@student.test (or USA-JHS-2026-0104) / student123
         </p>

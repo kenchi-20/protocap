@@ -21,7 +21,7 @@ export default function ParentPortalLayout({ children }: { children: React.React
     }
   }, [isLoading, isAuthenticated, user, router]);
 
-  if (isLoading || !isAuthenticated) {
+  if (isLoading || !isAuthenticated || user?.role !== "parent") {
     return <div className="p-8 text-center text-slate-500">Loading...</div>;
   }
 

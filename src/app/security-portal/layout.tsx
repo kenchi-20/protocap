@@ -21,7 +21,7 @@ export default function SecurityPortalLayout({ children }: { children: React.Rea
     }
   }, [isLoading, isAuthenticated, user, router]);
 
-  if (isLoading || !isAuthenticated) {
+  if (isLoading || !isAuthenticated || (user?.role !== "security" && user?.role !== "admin")) {
     return <div className="p-8 text-center text-slate-500">Loading...</div>;
   }
 
