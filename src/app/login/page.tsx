@@ -28,7 +28,8 @@ export default function LoginPage() {
 
     // Redirect based on role
     const user = useAuthStore.getState().user;
-    if (user?.role === "parent") router.push("/parent-portal");
+    if (user?.role === "student") router.push("/student");
+    else if (user?.role === "parent") router.push("/parent-portal");
     else if (user?.role === "teacher") router.push("/teacher-portal");
     else router.push("/security-portal");
   };
@@ -39,7 +40,7 @@ export default function LoginPage() {
       <main className="mx-auto max-w-md px-4 py-12">
         <form onSubmit={handleSubmit} className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-card">
           <div>
-            <label className="block text-sm font-medium text-ink">Email</label>
+            <label className="block text-sm font-medium text-ink">Email or Student ID</label>
             <input
               type="email"
               value={email}
@@ -70,7 +71,7 @@ export default function LoginPage() {
           </button>
         </form>
         <p className="mt-4 text-center text-xs text-slate-500">
-          Demo credentials: maria@parent.test / parent123
+          juan@student.test (or USA-JHS-2026-0104) / student123
         </p>
       </main>
     </>

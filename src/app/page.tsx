@@ -7,7 +7,7 @@ import { DEMO_STUDENT_ID } from "@/types";
 
 const lanes = [
   {
-    href: "/student",
+    href: "/login",
     title: "Student portal",
     who: "Juan Dela Cruz",
     id: DEMO_STUDENT_ID,

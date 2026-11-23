@@ -5,8 +5,7 @@ import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/", label: "Overview" },
-  { href: "/student", label: "Student" },
-  { href: "/login", label: "Portals" },
+  { href: "/login", label: "Login" },
 ];
 
 export function AppHeader({ eyebrow, title, subtitle }: { eyebrow?: string; title: string; subtitle?: string }) {
