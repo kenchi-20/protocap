@@ -73,6 +73,93 @@ test.describe('End-to-End Portal Verification', () => {
     await expect(page).toHaveURL(/.*login/);
   });
 
+  test('Step 5: Header shows "Login" link instead of "Portals"', async ({ page }) => {
+    await page.goto('/login');
+    await page.waitForLoadState('networkidle');
+
+    // Verify header navigation shows "Login" not "Portals"
+    // Next.js <Link> renders as <a> tag
+    await expect(page.locator('nav a').filter({ hasText: 'Login' }).first()).toBeVisible();
+    await expect(page.locator('nav a').filter({ hasText: 'Portals' }).first()).not.toBeVisible();
+  });
+
+  test('Step 5: Unauthenticated access to /student redirects to /login', async ({ page }) => {
+    await page.goto('/student');
+    await page.waitForLoadState('networkidle');
+
+    // Should redirect to /login
+    await expect(page).toHaveURL(/.*login/);
+  });
+
+  test('Step 5: Student login with Student ID redirects to /student', async ({ page }) => {
+    await page.goto('/login');
+    await page.waitForLoadState('networkidle');
+
+    // Fill in Student ID and password
+    const emailInput = page.locator('input[type="email"]');
+    const passwordInput = page.locator('input[type="password"]');
+
+    await emailInput.fill('USA-JHS-2026-0104');
+    await expect(emailInput).toHaveValue('USA-JHS-2026-0104');
+
+    await passwordInput.fill('student123');
+    await expect(passwordInput).toHaveValue('student123');
+
+    await page.click('button[type="submit"]');
+
+    // Wait for URL to change (login is async)
+    await page.waitForURL(/.*student/, { timeout: 10000 });
+    await expect(page).toHaveURL(/.*student/);
+  });
+
+  test('Step 5: Student view displays personalized ID badge and dynamic QR code', async ({ page }) => {
+    await page.goto('/login');
+    await page.waitForLoadState('networkidle');
+
+    // Login as student
+    const emailInput = page.locator('input[type="email"]');
+    const passwordInput = page.locator('input[type="password"]');
+
+    await emailInput.fill('USA-JHS-2026-0104');
+    await passwordInput.fill('student123');
+    await page.click('button[type="submit"]');
+
+    await page.waitForURL(/.*student/, { timeout: 10000 });
+    await page.waitForLoadState('networkidle');
+
+    // Verify student's name is displayed in the header
+    await expect(page.locator('header')).toContainText('Juan Dela Cruz');
+
+    // Verify Student ID badge is visible
+    await expect(page.locator('text=Digital ID')).toBeVisible();
+    await expect(page.locator('text=USA-JHS-2026-0104')).toBeVisible();
+
+    // Verify QR code component is visible (it's rendered as an SVG)
+    await expect(page.locator('svg').first()).toBeVisible();
+  });
+
+  test('Step 5: Sign out on /student clears session and redirects to /login', async ({ page }) => {
+    await page.goto('/login');
+    await page.waitForLoadState('networkidle');
+
+    // Login as student
+    const emailInput = page.locator('input[type="email"]');
+    const passwordInput = page.locator('input[type="password"]');
+
+    await emailInput.fill('USA-JHS-2026-0104');
+    await passwordInput.fill('student123');
+    await page.click('button[type="submit"]');
+
+    await page.waitForURL(/.*student/, { timeout: 10000 });
+    await page.waitForLoadState('networkidle');
+
+    // Click Sign out
+    await page.click('text=Sign out');
+
+    // Should redirect to /login
+    await expect(page).toHaveURL(/.*login/);
+  });
+
   test('Step 4 & 5: Admin / Security portal, Log absence gating, and Gate Scanner', async ({ page }) => {
     // 1. Principal (admin) login
     await page.goto('/login');

@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { students as seedStudents } from "@/lib/seed";
 import type { Student } from "@/types";
 
 export async function fetchChildrenForParent(parentUserId: string): Promise<string[]> {
@@ -56,44 +57,56 @@ function demoTeacherSections(userId: string): string[] {
 
 export async function fetchStudentsByIds(studentIds: string[]): Promise<Student[]> {
   if (studentIds.length === 0) return [];
-  const { data, error } = await supabase
-    .from("students")
-    .select("*")
-    .in("id", studentIds);
+  try {
+    const { data, error } = await supabase
+      .from("students")
+      .select("*")
+      .in("id", studentIds);
 
-  if (error || !data) return [];
-  return data.map((row) => ({
-    id: row.id,
-    name: row.name,
-    gradeSection: row.grade_section,
-    parentName: row.parent_name,
-    parentContact: row.parent_contact,
-    adviserName: row.adviser_name,
-    consentVerified: row.consent_verified,
-    absenceCount: row.absence_count,
-    avatarInitials: row.avatar_initials,
-  }));
+    if (error || !data || data.length === 0) {
+      return seedStudents.filter((s) => studentIds.includes(s.id));
+    }
+    return data.map((row) => ({
+      id: row.id,
+      name: row.name,
+      gradeSection: row.grade_section,
+      parentName: row.parent_name,
+      parentContact: row.parent_contact,
+      adviserName: row.adviser_name,
+      consentVerified: row.consent_verified,
+      absenceCount: row.absence_count,
+      avatarInitials: row.avatar_initials,
+    }));
+  } catch {
+    return seedStudents.filter((s) => studentIds.includes(s.id));
+  }
 }
 
 export async function fetchStudentsBySections(sections: string[]): Promise<Student[]> {
   if (sections.length === 0) return [];
-  const { data, error } = await supabase
-    .from("students")
-    .select("*")
-    .in("grade_section", sections);
+  try {
+    const { data, error } = await supabase
+      .from("students")
+      .select("*")
+      .in("grade_section", sections);
 
-  if (error || !data) return [];
-  return data.map((row) => ({
-    id: row.id,
-    name: row.name,
-    gradeSection: row.grade_section,
-    parentName: row.parent_name,
-    parentContact: row.parent_contact,
-    adviserName: row.adviser_name,
-    consentVerified: row.consent_verified,
-    absenceCount: row.absence_count,
-    avatarInitials: row.avatar_initials,
-  }));
+    if (error || !data || data.length === 0) {
+      return seedStudents.filter((s) => sections.includes(s.gradeSection));
+    }
+    return data.map((row) => ({
+      id: row.id,
+      name: row.name,
+      gradeSection: row.grade_section,
+      parentName: row.parent_name,
+      parentContact: row.parent_contact,
+      adviserName: row.adviser_name,
+      consentVerified: row.consent_verified,
+      absenceCount: row.absence_count,
+      avatarInitials: row.avatar_initials,
+    }));
+  } catch {
+    return seedStudents.filter((s) => sections.includes(s.gradeSection));
+  }
 }
 
 export async function fetchAllStudents(): Promise<Student[]> {

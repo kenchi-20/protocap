@@ -38,7 +38,7 @@ export default function LoginPage() {
     <>
       <AppHeader title="Sign in" subtitle="Enter your credentials to access your portal" />
       <main className="mx-auto max-w-md px-4 py-12">
-        <form onSubmit={handleSubmit} className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-card">
+        <form onSubmit={handleSubmit} noValidate className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-card">
           <div>
             <label className="block text-sm font-medium text-ink">Email or Student ID</label>
             <input
