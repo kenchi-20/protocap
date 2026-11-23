@@ -21,7 +21,7 @@ test.describe('End-to-End Portal Verification', () => {
     await page.goto('/login');
     await page.waitForLoadState('networkidle');
 
-    const emailInput = page.locator('input[type="email"]');
+    const emailInput = page.locator('input[name="identifier"]');
     const passwordInput = page.locator('input[type="password"]');
 
     await emailInput.fill('maria@parent.test');
@@ -45,7 +45,7 @@ test.describe('End-to-End Portal Verification', () => {
     await page.goto('/login');
     await page.waitForLoadState('networkidle');
 
-    const emailInput = page.locator('input[type="email"]');
+    const emailInput = page.locator('input[name="identifier"]');
     const passwordInput = page.locator('input[type="password"]');
 
     await emailInput.fill('osalla@teacher.test');
@@ -96,7 +96,7 @@ test.describe('End-to-End Portal Verification', () => {
     await page.waitForLoadState('networkidle');
 
     // Fill in Student ID and password
-    const emailInput = page.locator('input[type="email"]');
+    const emailInput = page.locator('input[name="identifier"]');
     const passwordInput = page.locator('input[type="password"]');
 
     await emailInput.fill('USA-JHS-2026-0104');
@@ -117,7 +117,7 @@ test.describe('End-to-End Portal Verification', () => {
     await page.waitForLoadState('networkidle');
 
     // Login as student
-    const emailInput = page.locator('input[type="email"]');
+    const emailInput = page.locator('input[name="identifier"]');
     const passwordInput = page.locator('input[type="password"]');
 
     await emailInput.fill('USA-JHS-2026-0104');
@@ -143,7 +143,7 @@ test.describe('End-to-End Portal Verification', () => {
     await page.waitForLoadState('networkidle');
 
     // Login as student
-    const emailInput = page.locator('input[type="email"]');
+    const emailInput = page.locator('input[name="identifier"]');
     const passwordInput = page.locator('input[type="password"]');
 
     await emailInput.fill('USA-JHS-2026-0104');
@@ -165,7 +165,7 @@ test.describe('End-to-End Portal Verification', () => {
     await page.goto('/login');
     await page.waitForLoadState('networkidle');
 
-    const emailInput = page.locator('input[type="email"]');
+    const emailInput = page.locator('input[name="identifier"]');
     const passwordInput = page.locator('input[type="password"]');
 
     await emailInput.fill('principal@admin.test');

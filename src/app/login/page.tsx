@@ -42,11 +42,13 @@ export default function LoginPage() {
           <div>
             <label className="block text-sm font-medium text-ink">Email or Student ID</label>
             <input
-              type="email"
+              type="text"
+              name="identifier"
+              id="identifier"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-maroon"
-              placeholder="you@example.test"
+              placeholder="you@example.test or USA-JHS-2026-0104"
               required
             />
           </div>
