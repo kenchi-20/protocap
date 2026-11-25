@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { students as seedStudents } from "@/lib/seed";
+import { getRegisteredParents } from "@/store/useAuthStore";
 import type { Student } from "@/types";
 
 export async function fetchChildrenForParent(parentUserId: string): Promise<string[]> {
@@ -48,7 +49,9 @@ function demoParentChildren(userId: string): string[] {
     "usr-elena": ["USA-JHS-2026-0062"],
     "usr-henry": ["USA-JHS-2026-0142"],
   };
-  return map[userId] ?? [];
+  if (map[userId]) return map[userId];
+  const registered = getRegisteredParents().find((p) => p.id === userId);
+  return registered ? [registered.studentId] : [];
 }
 
 function demoTeacherSections(userId: string): string[] {

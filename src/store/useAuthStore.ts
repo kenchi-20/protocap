@@ -4,12 +4,52 @@ import { students } from "@/lib/seed";
 import { saveSessionCookie, getSessionCookie, clearSessionCookie } from "@/lib/auth-cookies";
 import type { User, UserRole } from "@/types";
 
+export interface RegisteredParent {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  studentId: string;
+  pass: string;
+}
+
+const REGISTERED_PARENTS_KEY = "one-id-registered-parents";
+
+export function getRegisteredParents(): RegisteredParent[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(REGISTERED_PARENTS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveRegisteredParent(parent: RegisteredParent) {
+  if (typeof window === "undefined") return;
+  try {
+    const existing = getRegisteredParents();
+    // Replace if same email exists, otherwise append
+    const filtered = existing.filter((p) => p.email.toLowerCase() !== parent.email.toLowerCase());
+    localStorage.setItem(REGISTERED_PARENTS_KEY, JSON.stringify([...filtered, parent]));
+  } catch {
+    // ignore
+  }
+}
+
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   hydrate: () => void;
   login: (identifier: string, password: string) => Promise<{ ok: boolean; error?: string }>;
+  registerParent: (data: {
+    name: string;
+    email: string;
+    phone: string;
+    studentId: string;
+    pass: string;
+  }) => Promise<{ ok: boolean; error?: string }>;
   logout: () => void;
 }
 
@@ -21,6 +61,21 @@ export const useAuthStore = create<AuthState>((set) => ({
   hydrate: () => {
     const user = getSessionCookie();
     set({ user, isAuthenticated: !!user, isLoading: false });
+  },
+
+  registerParent: async (data) => {
+    const cleanEmail = data.email.trim().toLowerCase();
+    const id = `usr-parent-${Date.now()}`;
+    const newParent: RegisteredParent = {
+      id,
+      name: data.name.trim(),
+      email: cleanEmail,
+      phone: data.phone.trim(),
+      studentId: data.studentId.trim(),
+      pass: data.pass,
+    };
+    saveRegisteredParent(newParent);
+    return { ok: true };
   },
 
   login: async (identifier, password) => {
@@ -43,10 +98,26 @@ export const useAuthStore = create<AuthState>((set) => ({
     const trimmedIdentifier = identifier.trim();
     const cleanIdentifier = trimmedIdentifier.toLowerCase();
 
+    // 0. Check dynamically registered parents
+    const registeredParents = getRegisteredParents();
+    const registeredMatch = registeredParents.find(
+      (p) => p.email.toLowerCase() === cleanIdentifier && p.pass === password
+    );
+    if (registeredMatch) {
+      userRecord = {
+        id: registeredMatch.id,
+        email: registeredMatch.email,
+        role: "parent",
+        name: registeredMatch.name,
+      };
+    }
+
     // 1. Check demo non-student users by email
-    const match = demoUsers[cleanIdentifier];
-    if (match && match.pass === password) {
-      userRecord = { id: match.id, email: cleanIdentifier, role: match.role, name: match.name };
+    if (!userRecord) {
+      const match = demoUsers[cleanIdentifier];
+      if (match && match.pass === password) {
+        userRecord = { id: match.id, email: cleanIdentifier, role: match.role, name: match.name };
+      }
     }
 
     // 2. Check seeded students fallback (by student ID or email)

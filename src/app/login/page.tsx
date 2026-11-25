@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -78,6 +79,10 @@ export default function LoginPage() {
             Quick fill demo accounts
           </p>
           <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+            <Link href="/signup" className="rounded-xl border border-maroon/20 bg-maroon-soft/30 p-2 text-left hover:border-maroon hover:bg-maroon-soft/30 transition text-xs">
+              <span className="block font-semibold text-ink">Need a parent account?</span>
+              <span className="block font-mono text-[10px] text-slate-500 truncate">Sign up</span>
+            </Link>
             <button
               type="button"
               onClick={() => {
@@ -128,6 +133,13 @@ export default function LoginPage() {
         <p className="mt-4 text-center text-xs text-slate-500">
           juan@student.test (or USA-JHS-2026-0104) / student123
         </p>
+
+        <Link href="/signup" className="mt-6 block">
+          <div className="rounded-2xl border border-maroon/20 bg-maroon-soft/30 p-4 text-center transition hover:border-maroon/40 hover:bg-maroon-soft/50">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Need a parent account?</p>
+            <p className="mt-1 text-sm font-semibold text-maroon">Sign up</p>
+          </div>
+        </Link>
       </main>
     </>
   );
