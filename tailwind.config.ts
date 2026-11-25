@@ -18,6 +18,10 @@ const config: Config = {
         },
         ink: "#0F172A",
         paper: "#F8FAFC",
+        maroon_soft: "#F6E8E6",
+        gold_soft: "#FEF3C7",
+        border_subtle: "#e2e8f0",
+        surface_hover: "#f8fafc",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
@@ -27,6 +31,12 @@ const config: Config = {
         card: "0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(122, 28, 28, 0.06)",
         float: "0 12px 40px rgba(15, 23, 42, 0.18)",
       },
+    },
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
     },
   },
   plugins: [],
