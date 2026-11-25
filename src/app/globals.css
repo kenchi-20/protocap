@@ -24,19 +24,130 @@
   --gold-soft: #FEF3C7;
   --border-subtle: #e2e8f0;
   --surface-hover: #f8fafc;
+
+  /* Custom easing curves (Apple/Emil design principles) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-html,
+html {
+  /* Mobile Native: Kill gray/blue flash on tap */
+  -webkit-tap-highlight-color: transparent;
+  /* Mobile Native: Prevent pull-to-refresh hijacking scroll */
+  overscroll-behavior: none;
+  /* Mobile Native: No font inflation in landscape */
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   background: var(--paper);
   color: var(--ink);
-}
-
-body {
-  min-height: 100vh;
+  min-height: 100dvh;
   background-image:
     radial-gradient(1200px 480px at 100% -10%, rgba(217, 119, 6, 0.12), transparent 55%),
     radial-gradient(900px 420px at -10% 0%, rgba(122, 28, 28, 0.1), transparent 50%);
+}
+
+/* Mobile Native: Base styles for all tappable elements */
+button,
+a,
+[role="button"],
+.tappable {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Mobile Native: Gate hover styles to devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  button:hover,
+  a:hover,
+  [role="button"]:hover,
+  .tappable:hover {
+    /* Hover styles go here - defined per component */
+  }
+}
+
+/* Mobile Native: Ensure minimum 16px font size on touch devices to prevent zoom */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* Apple Design: Button press feedback - instant response on pointer-down */
+button:not(:disabled):active,
+a:not(:disabled):active,
+[role="button"]:not(:disabled):active,
+.tappable:not(:disabled):active {
+  transform: scale(0.97);
+  transition: transform 100ms var(--ease-out);
+}
+
+/* Apple Design: Focus visible styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--maroon);
+  outline-offset: 2px;
+}
+
+/* Emil Design: Stagger animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 300ms var(--ease-out) forwards;
+  opacity: 0;
+}
+
+/* Apple Design: Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-fade-in-up {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Apple Design: Reduced transparency support.
+   Drop the blur but keep each surface's own background — overriding the
+   background here would erase deliberate dark materials (the demo bar's
+   bg-ink/95) and render them white. */
+@media (prefers-reduced-transparency: reduce) {
+  [class*="backdrop-blur"] {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Frost the header instead of dropping its translucency entirely. */
+  header[class*="backdrop-blur"] {
+    background-color: rgb(255 255 255 / 0.95);
+  }
+}
+
+/* Apple Design: Higher contrast support */
+@media (prefers-contrast: more) {
+  :root {
+    --border-subtle: #94a3b8;
+  }
 }
 
 * {
@@ -46,4 +157,41 @@ body {
 
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* Form field entrance animations with @starting-style (modern CSS) */
+.form-field {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out);
+}
+
+@starting-style {
+  .form-field {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* Error state animation */
+.field-error {
+  animation: shake 300ms var(--ease-out);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+/* Success checkmark animation */
+@keyframes checkmark {
+  0% { stroke-dashoffset: 100; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+.checkmark-animate {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: checkmark 400ms var(--ease-out) forwards;
 }
