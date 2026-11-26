@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
 import { students } from "@/lib/seed";
 import { Check, AlertCircle } from "lucide-react";
@@ -114,10 +114,10 @@ export default function ParentSignupForm() {
           router.push("/login");
         }, 800);
       } else {
-        setErrors({ ...errors, general: result.error || "Registration failed" });
+        setErrors((prev) => ({ ...prev, general: result.error || "Registration failed" }));
       }
     } catch (err) {
-      setErrors({ ...errors, general: "Network error" });
+      setErrors((prev) => ({ ...prev, general: "Network error" }));
     } finally {
       setIsSubmitting(false);
     }
@@ -143,7 +143,7 @@ export default function ParentSignupForm() {
     },
   };
 
-  const fieldVariants = {
+  const fieldVariants: Variants = {
     hidden: { opacity: 0, y: 16 },
     visible: {
       opacity: 1,
@@ -152,9 +152,15 @@ export default function ParentSignupForm() {
     },
   };
 
-  const errorVariants = {
-    hidden: { opacity: 0, height: 0 },
-    visible: { opacity: 1, height: "auto", transition: { duration: 200, ease: [0.23, 1, 0.32, 1] } },
+  const errorVariants: Variants = {
+    hidden: { opacity: 0, y: -4 },
+    visible: { opacity: 1, y: 0, transition: { duration: 150, ease: [0.23, 1, 0.32, 1] } },
+  };
+
+  const iconVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { type: "spring", bounce: 0.2, duration: 0.25 } },
+    exit: { opacity: 0, scale: 0.8, transition: { duration: 120 } },
   };
 
   return (
@@ -211,7 +217,7 @@ export default function ParentSignupForm() {
               }}
               onBlur={(e) => handleBlur(field.name, e.target.value, field.validator)}
               className={`
-                w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition-colors duration-200 ease-out
+                w-full rounded-lg border pe-[40px] px-3 py-2.5 text-sm outline-none transition-colors duration-200 ease-out
                 ${touched[field.name] && errors[field.name]
                   ? "border-red-400 focus:border-red-500 focus:ring-1 focus:ring-red-200 bg-red-50"
                   : "border-slate-200 focus:border-maroon focus:ring-1 focus:ring-maroon/20"
@@ -232,11 +238,11 @@ export default function ParentSignupForm() {
               {touched[field.name] && field.value && (
                 <motion.div
                   key="icon"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.5 }}
-                  transition={{ type: "spring", bounce: 0.3, duration: 0.3 }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  variants={iconVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="absolute right-4 top-1/2 -translate-y-1/2"
                 >
                   {errors[field.name] ? (
                     <AlertCircle className="h-5 w-5 text-red-500" />
@@ -256,7 +262,7 @@ export default function ParentSignupForm() {
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
-                className="mt-1.5 text-sm text-red-600 flex items-center gap-1"
+                className="mt-2 text-sm text-red-600 flex items-center gap-1"
               >
                 <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
                 {errors[field.name]}
@@ -270,11 +276,11 @@ export default function ParentSignupForm() {
         {errors.general && (
           <motion.p
             key="general-error"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 200, ease: [0.23, 1, 0.32, 1] }}
-            className="text-sm text-red-600 flex items-center gap-1"
+            variants={errorVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="mt-2 text-sm text-red-600 flex items-center gap-1"
           >
             <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
             {errors.general}

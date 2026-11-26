@@ -9,7 +9,10 @@ import { test, expect } from '@playwright/test';
  */
 test.describe('Reduced transparency', () => {
   test('demo switcher bar keeps its dark background when transparency is reduced', async ({ page }) => {
-    await page.emulateMedia({ reducedMotion: 'no-preference', reducedTransparency: 'reduce' });
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Emulation.setEmulatedMedia', {
+      features: [{ name: 'prefers-reduced-transparency', value: 'reduce' }],
+    });
 
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -27,7 +30,10 @@ test.describe('Reduced transparency', () => {
   });
 
   test('header stays legible (near-white) when transparency is reduced', async ({ page }) => {
-    await page.emulateMedia({ reducedTransparency: 'reduce' });
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Emulation.setEmulatedMedia', {
+      features: [{ name: 'prefers-reduced-transparency', value: 'reduce' }],
+    });
 
     await page.goto('/');
     await page.waitForLoadState('networkidle');

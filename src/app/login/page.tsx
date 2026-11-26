@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
 import { AppHeader } from "@/components/AppHeader";
 import { Loader2, Check } from "lucide-react";
@@ -55,7 +55,7 @@ export default function LoginPage() {
     },
   };
 
-  const fieldVariants = {
+  const fieldVariants: Variants = {
     hidden: { opacity: 0, y: 12 },
     visible: {
       opacity: 1,
@@ -64,7 +64,7 @@ export default function LoginPage() {
     },
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 8 },
     visible: {
       opacity: 1,
